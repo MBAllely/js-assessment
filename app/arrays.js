@@ -2,40 +2,39 @@ exports = typeof window === 'undefined' ? global : window;
 
 exports.arraysAnswers = {
   indexOf: function(arr, item) {
-    
-  },
-
-  sum: function(arr) {
-    let sum = 0;
-
     for (let i = 0; i < arr.length; i++) {
-      sum += arr[i]
-    }
-    return sum;
-  },
-
-  remove: function(arr, item) {
-    let newarr = [];
-
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] !== item) {
-        newarr.push(arr[i]);
+      if (arr[i] === item) {
+        return i;
       }
     }
 
-    return newarr;
+    return -1;
+  },
+
+  sum: function(arr) {
+    let total = arr.reduce(function(sum, index){
+      return sum + index;
+    }, 0);
+    return total;
+  },
+
+  remove: function(arr, item) {
+    let filtered = arr.filter(function(i) {
+      return i !== item;
+    });
+
+    return filtered;
   },
 
   removeWithoutCopy: function(arr, item) {
-    // for (let i = 0; i < arr.length; i++) {
-    //   if (arr[i] === item) {
-    //     arr.splice(i, 1);
-    //   }
-    //   console.log(arr);
-    //   console.log(arr[i]);
-    // }
-    //
-    // return arr;
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] === item) {
+        arr.splice(i, 1);
+        i = 0;
+      }
+    }
+
+    return arr;
   },
 
   append: function(arr, item) {
@@ -65,19 +64,15 @@ exports.arraysAnswers = {
   concat: function(arr1, arr2) {
     let newarr = [];
 
-    arr1.forEach(function(index) {
-      newarr.push(index);
-    });
-
-    arr2.forEach(function(index) {
-      newarr.push(index);
-    });
+    arr1.forEach(i => newarr.push(i))
+    arr2.forEach(i => newarr.push(i))
 
     return newarr;
   },
 
   insert: function(arr, item, index) {
-
+    arr.splice(index, 0, item)
+    return arr;
   },
 
   count: function(arr, item) {
@@ -93,11 +88,23 @@ exports.arraysAnswers = {
   },
 
   duplicates: function(arr) {
+  let newarr = [];
 
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i] === arr[j]) {
+        if (newarr.includes(arr[i])) {
+          break;
+        }
+        newarr.push(arr[i]);
+      }
+    }
+  }
+    return newarr;
   },
 
   square: function(arr) {
-    let newarr = arr.map(function(i) {
+    const newarr = arr.map(function(i) {
       return i * i;
     })
 
@@ -105,7 +112,7 @@ exports.arraysAnswers = {
   },
 
   findAllOccurrences: function(arr, target) {
-    occurrences = [];
+    let occurrences = [];
 
     for (let i = 0; i < arr.length; i++) {
       if (arr[i] === target) {
